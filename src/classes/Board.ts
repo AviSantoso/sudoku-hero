@@ -1,14 +1,18 @@
+import autoBind from "auto-bind";
+
 import {
   getCellsFromTemplate,
-  getRowsFromCells,
   getColsFromCells,
-  getSubGridsFromCells,
   getIndex,
+  getRowsFromCells,
+  getSubGridsFromCells,
 } from "../helpers";
-import autoBind from "auto-bind";
+
 import type { Cell } from "./Cell";
 import type { CellValue } from "./CellValue";
 import type { Division } from "./Division";
+
+const SUDOKU_HERO = "Sudoku-Hero";
 
 export class Board {
   public isValid: boolean;
@@ -72,6 +76,20 @@ export class Board {
 
   getSubGrid(sg: number) {
     return this.subGrids[sg];
+  }
+
+  save(): string {
+    const template = this.getTemplate();
+    const str = template.reduce((s, x) => (s += (x ?? 0).toString()), "");
+    return str;
+  }
+
+  load(str: string) {
+    const template = str
+      .split("")
+      .map((x) => parseInt(x))
+      .map((x) => (x === 0 ? null : x));
+    this.setTemplate(template);
   }
 
   private refreshIsValid() {

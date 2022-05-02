@@ -44,4 +44,19 @@ describe("GameController", function () {
       expect(board.isValid).toBe(true);
     }
   });
+
+  test("can save and load the configuration of the board to url", function () {
+    board.setCell(1, 5, 3);
+    expect(board.getCell(1, 5).value).toBe(3);
+
+    const saved = board.save();
+    expect(saved.length).toBeGreaterThan(0);
+
+    gc.clear();
+    expect(board.getCell(1, 5).value).toBe(null);
+
+    board.load(saved);
+
+    expect(board.getCell(1, 5).value).toBe(3);
+  });
 });

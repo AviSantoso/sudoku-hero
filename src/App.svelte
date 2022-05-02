@@ -11,6 +11,17 @@
   let selectedCell: Cell | null = null;
 
   $: subGrids = Array.from(new Array(9)).map((_, i) => board.getSubGrid(i));
+  $: getSavedUrl();
+
+  function getSavedUrl() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    if (urlParams.has("saved")) {
+      const saved = urlParams.get("saved");
+      board.load(saved);
+      board = board;
+    }
+  }
 
   function onClear() {
     gc.clear();
@@ -19,6 +30,15 @@
 
   function onRandom() {
     gc.random(27);
+    board = board;
+  }
+
+  function onSave() {
+    const saved = board.save();
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    urlParams.set("saved", saved);
+    window.location.search = urlParams.toString();
     board = board;
   }
 
@@ -67,7 +87,7 @@
   <div class="buttons">
     <button on:click={onClear}>Clear</button>
     <button on:click={onRandom}>Random</button>
-    <button>Save</button>
+    <button on:click={onSave}>Save</button>
     <button class="solve">Solve</button>
   </div>
 </main>
