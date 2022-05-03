@@ -26,11 +26,19 @@
   function onClear() {
     gc.clear();
     board = board;
+    gc = gc;
   }
 
   function onRandom() {
-    gc.random(27);
+    gc.random(21);
     board = board;
+    gc = gc;
+  }
+
+  function onSolve() {
+    gc.solve();
+    board = board;
+    gc = gc;
   }
 
   function onSave() {
@@ -39,7 +47,6 @@
     const urlParams = new URLSearchParams(queryString);
     urlParams.set("saved", saved);
     window.location.search = urlParams.toString();
-    board = board;
   }
 
   function handleSelectCell(data) {
@@ -52,17 +59,18 @@
       return;
     }
 
-    let val = null;
     if (e.key !== "Backspace" && e.key !== "Delete") {
       let num = parseInt(e.key);
       if (Number.isNaN(num) || num === 0) {
         return;
       }
-      val = num;
+      gc.setCell(selectedCell.row, selectedCell.col, num);
+    } else {
+      gc.setCell(selectedCell.row, selectedCell.col, null);
     }
 
-    board.setCell(selectedCell.row, selectedCell.col, val);
     board = board;
+    gc = gc;
     selectedCell = null;
   }
 
@@ -84,11 +92,15 @@
     {/each}
   </div>
 
+  <div class="counter">
+    {gc.numMoves === 0 ? "Waiting..." : gc.numMoves}
+  </div>
+
   <div class="buttons">
     <button on:click={onClear}>Clear</button>
     <button on:click={onRandom}>Random</button>
     <button on:click={onSave}>Save</button>
-    <button class="solve">Solve</button>
+    <button on:click={onSolve} class="solve">Solve</button>
   </div>
 </main>
 
@@ -111,11 +123,15 @@
   }
 
   .board {
-    margin: 2em;
+    margin: 1em;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 4px;
+  }
+
+  .counter {
+    margin-bottom: 1em;
   }
 
   button {

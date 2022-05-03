@@ -5,7 +5,7 @@ describe("GameController", function () {
   let board: Board;
   let gc: GameController;
 
-  beforeAll(function () {
+  beforeEach(function () {
     board = new Board();
     gc = new GameController(board);
   });
@@ -45,7 +45,7 @@ describe("GameController", function () {
     }
   });
 
-  test("can save and load the configuration of the board to url", function () {
+  test("can save and load the configuration of the board to a string", function () {
     board.setCell(1, 5, 3);
     expect(board.getCell(1, 5).value).toBe(3);
 
@@ -58,5 +58,25 @@ describe("GameController", function () {
     board.load(saved);
 
     expect(board.getCell(1, 5).value).toBe(3);
+  });
+
+  test("can solve to finish the rest of the board", function () {
+    gc.random(21);
+
+    {
+      const template = board.getTemplate();
+      expect(template.filter((x) => x !== null).length).toBe(21);
+      expect(board.isValid).toBe(true);
+    }
+
+    gc.solve();
+
+    {
+      const template = board.getTemplate();
+      expect(template.filter((x) => x !== null).length).toBe(81);
+      expect(board.isValid).toBe(true);
+    }
+
+    console.log(gc.numMoves);
   });
 });

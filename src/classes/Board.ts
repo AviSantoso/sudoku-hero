@@ -45,8 +45,16 @@ export class Board {
     return this.cells[getIndex(row, col)];
   }
 
+  getCellByIndex(index: number) {
+    return this.cells[index];
+  }
+
   setCell(row: number, col: number, value: number): void {
     const index = getIndex(row, col);
+    return this.setCellByIndex(index, value);
+  }
+
+  setCellByIndex(index: number, value: number) {
     const cell = this.cells[index];
 
     this.cells[index].value = value;
@@ -55,9 +63,9 @@ export class Board {
     const colDiv = this.getCol(cell.col);
     const sgDiv = this.getSubGrid(cell.subGrid);
 
-    rowDiv.updateIsValid();
-    colDiv.updateIsValid();
-    sgDiv.updateIsValid();
+    rowDiv.update();
+    colDiv.update();
+    sgDiv.update();
 
     if (!rowDiv.isValid || !colDiv.isValid || !sgDiv.isValid) {
       this.isValid = false;

@@ -1,15 +1,13 @@
-import { init } from "svelte/internal";
 import { Board } from "../classes/Board";
-import { Cell } from "../classes/Cell";
 import type { Division } from "../classes/Division";
-import { getCellsFromTemplate, getIndex, getRowFromCells } from "../helpers";
 
 describe("Division", function () {
+  let board: Board;
   let division: Division;
 
-  beforeAll(function () {
-    const cells = getCellsFromTemplate([]);
-    division = getRowFromCells(cells, 1);
+  beforeEach(function () {
+    board = new Board([]);
+    division = board.getRow(0);
   });
 
   test("exists", function () {
@@ -20,22 +18,29 @@ describe("Division", function () {
     expect(division.has(1)).toBe(false);
     expect(division.has(2)).toBe(false);
 
-    {
-      const cell = division.cells[0];
-      cell.value = 1;
-      division.cells[0] = cell;
-    }
+    board.setCellByIndex(0, 1);
 
     expect(division.has(1)).toBe(true);
     expect(division.has(2)).toBe(false);
 
-    {
-      const cell = division.cells[0];
-      cell.value = 2;
-      division.cells[0] = cell;
-    }
+    board.setCellByIndex(0, 2);
 
     expect(division.has(1)).toBe(false);
     expect(division.has(2)).toBe(true);
+  });
+
+  test(".remaining gets a list of numbers that are remaining", function () {
+    expect(division.remaining.length).toBe(9);
+
+    board.setCellByIndex(0, 1);
+
+    expect(division.remaining.length).toBe(8);
+    expect(division.remaining.includes(1)).toBe(false);
+
+    for (let i = 0; i < 9; i++) {
+      board.setCellByIndex(i, i + 1);
+    }
+
+    expect(division.remaining.length).toBe(0);
   });
 });

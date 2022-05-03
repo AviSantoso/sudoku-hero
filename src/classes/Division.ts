@@ -9,11 +9,13 @@ export class Division implements IDivision {
   type: "Row" | "Col" | "SubGrid";
   cells: Cell[];
   isValid: boolean;
+  remaining: number[];
 
   constructor(division: IDivision) {
     this.type = division.type;
     this.cells = division.cells;
     this.isValid = true;
+    this.remaining = Array.from(new Array(9)).map((_, i) => i + 1);
   }
 
   init() {
@@ -36,6 +38,31 @@ export class Division implements IDivision {
 
   print() {
     console.log(this.cells.map((x) => x.value).join(", "));
+  }
+
+  update() {
+    this.updateRemaining();
+    this.updateIsValid();
+    this.cells.forEach((c) => c.update());
+  }
+
+  updateRemaining() {
+    const existing = new Set();
+    for (let i = 0; i < this.cells.length; i++) {
+      const cell = this.cells[i];
+      if (!cell.value) {
+        continue;
+      }
+
+      existing.add(cell.value);
+    }
+    const remaining = [];
+    for (let i = 0; i < 9; i++) {
+      if (!existing.has(i + 1)) {
+        remaining.push(i + 1);
+      }
+    }
+    this.remaining = remaining;
   }
 
   updateIsValid() {

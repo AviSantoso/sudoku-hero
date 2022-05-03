@@ -47,4 +47,18 @@ describe("Board", function () {
     board.setCell(8, 0, 2);
     expect(board.isValid).toBe(true);
   });
+
+  test("getCellByIndex returns cell by index", function () {
+    board.setCell(0, 0, 1);
+
+    expect(board.getCell(0, 0).value).toBe(1);
+    expect(board.getCellByIndex(0).value).toBe(1);
+  });
+
+  test("setCellByIndex sets cell by index", function () {
+    board.setCellByIndex(0, 1);
+
+    expect(board.getCell(0, 0).value).toBe(1);
+    expect(board.getCellByIndex(0).value).toBe(1);
+  });
 });

@@ -13,6 +13,7 @@ export class Cell implements ICell {
   col: number;
   subGrid: number;
   value: CellValue;
+  remaining: number[];
 
   rowDiv: Division | null;
   colDiv: Division | null;
@@ -24,8 +25,21 @@ export class Cell implements ICell {
     this.subGrid = cell.subGrid;
     this.value = cell.value;
 
+    this.remaining = Array.from(new Array(9)).map((_, i) => i + 1);
+
     this.rowDiv = null;
     this.colDiv = null;
     this.sgDiv = null;
+  }
+
+  update() {
+    const remaining = [];
+    for (let i = 0; i < 9; i++) {
+      const v = i + 1;
+      if (!(this.rowDiv?.has(v) || this.colDiv?.has(v) || this.sgDiv?.has(v))) {
+        remaining.push(v);
+      }
+    }
+    this.remaining = remaining;
   }
 }
