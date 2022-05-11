@@ -75,8 +75,7 @@ describe("GameController", function () {
       const template = board.getTemplate();
       expect(template.filter((x) => x !== null).length).toBe(81);
       expect(board.isValid).toBe(true);
+      expect(gc.numMoves).toBeLessThan(1e4);
     }
-
-    console.log(gc.numMoves);
   });
 });

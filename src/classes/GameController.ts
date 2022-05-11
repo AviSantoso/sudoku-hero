@@ -35,30 +35,24 @@ export class GameController {
 
     const indexes = Array.from(new Array(81)).map((_, i) => i);
     const randomIndexes = _.shuffle(indexes).slice(0, n);
-    return this.recRandom(randomIndexes);
-  }
 
-  private recRandom(remaining: number[]): boolean {
-    const _remaining = [...remaining];
-    if (_remaining.length === 0) {
-      return true;
-    }
+    for (let i = 0; i < randomIndexes.length; i++) {
+      const idx = randomIndexes[i];
+      const randomValues = _.shuffle(
+        Array.from(new Array(9)).map((_, i) => i + 1)
+      );
 
-    const idx = _remaining.pop();
-
-    const numbers = Array.from(new Array(9)).map((_, i) => i + 1);
-    const randomNumbers = _.shuffle(numbers);
-
-    for (let i = 0; i < randomNumbers.length; i++) {
-      const randomNumber = randomNumbers[i];
-      this.board.setCellByIndex(idx, randomNumber);
-      if (this.board.isValid && this.recRandom(_remaining)) {
-        return true;
+      for (let i = 0; i < randomValues.length; i++) {
+        const val = randomValues[i];
+        this.board.setCellByIndex(idx, val);
+        if (this.board.isValid) {
+          break;
+        }
+        this.board.setCellByIndex(idx, 0);
       }
     }
 
-    this.board.setCellByIndex(idx, null);
-    return false;
+    return true;
   }
 
   solve(): boolean {
@@ -70,6 +64,10 @@ export class GameController {
   }
 
   private recSolve(remaining: number[]): boolean {
+    if (this.numMoves >= 1e5) {
+      throw new Error(`Number of moves has exceeded ${1e5},`);
+    }
+
     if (remaining.length === 0) {
       return true;
     }
