@@ -12,8 +12,6 @@ import type { Cell } from "./Cell";
 import type { CellValue } from "./CellValue";
 import type { Division } from "./Division";
 
-const SUDOKU_HERO = "Sudoku-Hero";
-
 export class Board {
   public isValid: boolean;
 
@@ -37,6 +35,10 @@ export class Board {
     this.subGrids.forEach((sg) => sg.init());
   }
 
+  toString(): string {
+    return this.rows.map((x) => x.toString()).join("\n");
+  }
+
   getTemplate() {
     return this.cells.map((x) => x.value);
   }
@@ -49,12 +51,12 @@ export class Board {
     return this.cells[index];
   }
 
-  setCell(row: number, col: number, value: number): void {
+  setCell(row: number, col: number, value: number | null): void {
     const index = getIndex(row, col);
     return this.setCellByIndex(index, value);
   }
 
-  setCellByIndex(index: number, value: number) {
+  setCellByIndex(index: number, value: number | null) {
     const cell = this.cells[index];
 
     this.cells[index].value = value;

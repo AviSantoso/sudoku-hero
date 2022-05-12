@@ -18,6 +18,10 @@ export class Division implements IDivision {
     this.remaining = Array.from(new Array(9)).map((_, i) => i + 1);
   }
 
+  toString(): string {
+    return this.cells.map((x) => x.toString()).join(" | ");
+  }
+
   init() {
     switch (this.type) {
       case "Col":
@@ -34,10 +38,6 @@ export class Division implements IDivision {
 
   has(n: number) {
     return this.cells.some((x) => x.value === n);
-  }
-
-  print() {
-    console.log(this.cells.map((x) => x.value).join(", "));
   }
 
   update() {

@@ -29,4 +29,24 @@ describe("Cell", function () {
     expect(cell.remaining.length).toBe(1);
     expect(cell.remaining[0]).toBe(9);
   });
+
+  test("must set a valid value or null", function () {
+    expect(cell.value).toBe(null);
+
+    expect(() => {
+      cell.value = 0;
+    }).toThrow();
+
+    expect(() => {
+      cell.value = 1;
+    }).not.toThrow();
+
+    expect(() => {
+      cell.value = 10;
+    }).toThrow();
+
+    expect(() => {
+      cell.value = 9;
+    }).not.toThrow();
+  });
 });

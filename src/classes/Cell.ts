@@ -12,12 +12,13 @@ export class Cell implements ICell {
   row: number;
   col: number;
   subGrid: number;
-  value: CellValue;
   remaining: number[];
 
   rowDiv: Division | null;
   colDiv: Division | null;
   sgDiv: Division | null;
+
+  private _value: CellValue;
 
   constructor(cell: ICell) {
     this.row = cell.row;
@@ -30,6 +31,21 @@ export class Cell implements ICell {
     this.rowDiv = null;
     this.colDiv = null;
     this.sgDiv = null;
+  }
+
+  toString(): string {
+    return "" + (this.value ?? "-");
+  }
+
+  public get value(): CellValue {
+    return this._value;
+  }
+
+  public set value(value: CellValue) {
+    if (value !== null && (value <= 0 || value >= 10)) {
+      throw new Error("Value out of bounds for Sudoku.");
+    }
+    this._value = value;
   }
 
   update() {
