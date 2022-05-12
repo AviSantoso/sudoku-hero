@@ -16,6 +16,13 @@ export class GameController {
     this.numMoves = 0;
   }
 
+  setCell(row: number, col: number, val: number | null) {
+    if (val !== null) {
+      this.numMoves++;
+    }
+    this.board.setCell(row, col, val);
+  }
+
   setCellByIndex(idx: number, val: number | null) {
     if (val !== null) {
       this.numMoves++;

@@ -14,10 +14,10 @@ export function createCell(i: number, value: CellValue = null): Cell | null {
   const subGrid = sgRow * 3 + sgCol;
 
   return new Cell({
-    row: row,
-    col: col,
-    subGrid: subGrid,
-    value: value,
+    row,
+    col,
+    subGrid,
+    value,
   });
 }
 
