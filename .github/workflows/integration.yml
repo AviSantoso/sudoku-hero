@@ -1,0 +1,42 @@
+name: "Continuous Integration"
+
+on:
+  push:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+  workflow_call:
+
+jobs:
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "checkout repository"
+        uses: actions/checkout@v2
+
+      - name: "setup node"
+        uses: actions/setup-node@v3.1.1
+        with:
+          node-version: 16
+
+      - name: "install npm@latest"
+        run: npm i -g npm@latest
+
+      - name: "install dependencies"
+        uses: bahmutov/npm-install@v1
+
+      - name: "format code"
+        run: npm run format
+        
+      - name: "lint code"
+        run: npm run lint
+        
+      - name: "run tests"
+        run: npm run test
+        
+      - name: "ensure coverage"
+        run: npm run coverage
