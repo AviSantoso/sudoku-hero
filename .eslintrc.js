@@ -9,6 +9,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
+  ignorePatterns: ["**/*.test.ts", "**/*.svelte"],
   plugins: ["svelte3", "@typescript-eslint"],
   overrides: [
     {
