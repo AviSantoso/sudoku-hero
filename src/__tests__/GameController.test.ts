@@ -77,4 +77,26 @@ describe("GameController", function () {
       expect(board.isValid).toBe(true);
     }
   });
+
+  test("clearing a cell does not increase the number of moves", function () {
+    expect(gc.numMoves).toBe(0);
+
+    gc.setCellByIndex(0, 1);
+    expect(gc.numMoves).toBe(1);
+
+    gc.setCellByIndex(0, null);
+    expect(gc.numMoves).toBe(1);
+
+    gc.setCell(0, 0, 1);
+    expect(gc.numMoves).toBe(2);
+
+    gc.setCell(0, 0, null);
+    expect(gc.numMoves).toBe(2);
+  });
+
+  test("throws on invalid board configuration", function () {
+    gc.setCell(0, 0, 1);
+    gc.setCell(0, 1, 1);
+    expect(() => gc.solve()).toThrow();
+  });
 });

@@ -35,6 +35,7 @@ export class GameController {
     this.solve();
 
     if (!this.board.isValid) {
+      /* istanbul ignore next */
       throw new Error(
         "Random generator failed to create a valid board configuration."
       );
@@ -57,6 +58,7 @@ export class GameController {
       (i) => this.board.getCellByIndex(i).value === null
     );
     if (!this._solve(empty)) {
+      /* istanbul ignore next */
       throw new Error(
         `Failed to solve the current board configuration.\n${this.board.toString()}`
       );
@@ -64,6 +66,7 @@ export class GameController {
   }
 
   private _solve(remaining: number[]): boolean {
+    /* istanbul ignore next */
     if (this.numMoves >= 1e5) {
       throw new Error(`Number of moves has exceeded ${1e5}.`);
     }

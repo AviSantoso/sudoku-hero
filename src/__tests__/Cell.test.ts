@@ -49,4 +49,18 @@ describe("Cell", function () {
       cell.value = 9;
     }).not.toThrow();
   });
+
+  test("should return the number when toString is used, and a dash when it is null.", function () {
+    cell.value = 1;
+
+    expect(cell.toString()).toBe("1");
+
+    cell.value = 5;
+
+    expect(cell.toString()).toBe("5");
+
+    cell.value = null;
+
+    expect(cell.toString()).toBe("-");
+  });
 });
